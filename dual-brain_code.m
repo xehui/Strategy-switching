@@ -41,25 +41,25 @@ processed_dir=fullfile(work_dir,'WTC\beforeWTC');% input the path for preporcess
 WTC_dir = fullfile(work_dir,'WTC'); % input the path for WTC data
  %% Data of each file can be obtained by contacting the correspodning author
 
-%bad channel£ºsub404-ch4; sub410-ch51(02Ch5); sub505-ch60 ch65
+%bad channelï¼šsub404-ch4; sub410-ch51(02Ch5); sub505-ch60 ch65
 sub_list=[404 410 505];
 
-load ('sub404.mat');%sub404µÄCh4¡úCh3,Ch13
+load ('sub404.mat');%sub404çš„Ch4â†’Ch3,Ch13
 hbo_new=hbo_all(:,[3 13]);
 hbo_all(:,4)=mean(hbo_new,2);
 save('sub404.mat','hbo_all','hbr_all');
 
-load ('sub410.mat');%Sub410µÄCh51£¨Ch5¡úCh10,Ch14)
+load ('sub410.mat');%Sub410çš„Ch51ï¼ˆCh5â†’Ch10,Ch14)
 hbo_new = hbo_all(:,[56 60]);
 hbo_all(:,51)=mean(hbo_new,2);
 % hbr_new = hbr_all(:,[1:50 52:92]);
 % hbr_all(:,51)=mean(hbr_new,2);
 save('sub410.mat','hbo_all','hbr_all');
 
-load ('sub505.mat');%Sub505µÄCh60£¨Ch14¡úCh5,Ch10)
+load ('sub505.mat');%Sub505çš„Ch60ï¼ˆCh14â†’Ch5,Ch10)
 hbo_new = hbo_all(:,[51,56]);
 hbo_all(:,60)=mean(hbo_new,2);
-hbr_new = hbr_all(:,[56 60]);%Sub505µÄCh65£¨Ch19¡úCh10,Ch14)
+hbr_new = hbr_all(:,[56 60]);%Sub505çš„Ch65ï¼ˆCh19â†’Ch10,Ch14)
 hbr_all(:,65)=mean(hbr_new,2);
 save('sub505.mat','hbo_all','hbr_all');
 
@@ -80,11 +80,6 @@ Num_channel =46;
    
       cd(processed_dir);
       load (['sub',num2str(w),'.mat']);
-      
-        %calculate brain-to-brain coherence        
-        %22+24  subject1¡úpatch1(3*5)  patch2(4*4)    subject2¡úpatch3(3*5)  patch4(4*4)
-        %3*5¡úPFC        4*4¡úDLPFC
-        %pur exp is 3*5¡úPFC  subject1¡úpatch1(3*5)1:22 subject2¡úpatch2(3*5) 23:44
 
         period_combined = [];
         scale_combined = [];
@@ -92,9 +87,7 @@ Num_channel =46;
  
         for Chan_nr= 1:Num_channel
             [Rsq,period,scale,coi,sig95]=wtc(hbr_all(:,Chan_nr),hbr_all(:,(Chan_nr+Num_channel)),'mcc',0,'ArrowDensity',[30 30]);
-            %wtcÊÇ»­Í¼£¬È»ºó¿ÉÒÔ¸³ÖµÌáÈ¡³öÀ´
-            %Ö±½Ó¶Ô¶ÁÈ¡ÍêµÄ½üºìÍâÊı¾İ½øĞĞ·ÖÎö
-            %[Rsq,period,scale,coi,sig95]=wtc(hbo_coop(:,Chan_nr),hbo_coop(:,(Chan_nr+Num_channel)),'mcc',0);±»ÊÔ1Í¨µÀ¶ÔÓ¦±»ÊÔ2µÄ23µÄÍ¨µÀ
+            %[Rsq,period,scale,coi,sig95]=wtc(hbo_coop(:,Chan_nr),hbo_coop(:,(Chan_nr+Num_channel)),'mcc',0);
             
             rsq_allchan{Chan_nr} = Rsq;%put Rsq into the cell   
             period_combined = [period_combined;period];%put period into the cell  22*1cell
@@ -102,7 +95,7 @@ Num_channel =46;
         end
         
         cd(WTC_dir );
-        %save(['sub' num2str(i) '_wtc.mat'],'rsq_allchan','period_combined','scale_combined');%Ç°ÎªÎÄ¼şÃûºóÎª±äÁ¿
+        %save(['sub' num2str(i) '_wtc.mat'],'rsq_allchan','period_combined','scale_combined');%å‰ä¸ºæ–‡ä»¶ååä¸ºå˜é‡
         save(['sub' num2str(w) '_hbr_wtc.mat'],'rsq_allchan','period_combined','scale_combined');
         disp(['sub' num2str(w) '_finished!']);
  end
